@@ -42,7 +42,7 @@ namespace PeopleManagement
                                     });
             });
             services.AddControllers();
-            services.AddScoped<ITechService, TechService>();
+            services.AddScoped<IPeopleService, PeopleService>();
 
             // Register the Swagger generator, defining 1 or more Swagger documents
             // Register the Swagger generator, defining 1 or more Swagger documents
@@ -51,7 +51,7 @@ namespace PeopleManagement
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
-                    Title = "Tech API",
+                    Title = "People Management API",
                     Description = "A simple example ASP.NET Core Web API",
                     Contact = new OpenApiContact
                     {
@@ -88,7 +88,7 @@ namespace PeopleManagement
             // specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Tech API V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "People Management API V1");
                 c.RoutePrefix = string.Empty;
             });
 

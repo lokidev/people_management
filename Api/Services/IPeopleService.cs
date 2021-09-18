@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace PeopleManagement.Services
 {
-    public interface ITechService
+    public interface IPeopleService
     {
-        public ICollection<Tech> GetAll();
+        public ICollection<Person> GetAll();
     }
 }

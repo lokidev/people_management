@@ -8,21 +8,21 @@ using Microsoft.Extensions.Configuration;
 
 namespace PeopleManagement.Services
 {
-    public class TechService : ITechService
+    public class PeopleService : IPeopleService
     {
         private readonly IConfiguration _configuration;
 
-        public TechService(IConfiguration configuration)
+        public PeopleService(IConfiguration configuration)
         {
             _configuration = configuration;
         }
 
-        public ICollection<Tech> GetAll()
+        public ICollection<Person> GetAll()
         {
             using (var db = new PeopleManagementContext(_configuration))
             {
-                var t = new TechRepo(db);
-                return t.GetProduts();
+                var p = new PeopleRepo(db);
+                return p.GetPeople();
             }
         }
     }

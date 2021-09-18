@@ -9,18 +9,18 @@ namespace PeopleManagement.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TechController : ControllerBase
+    public class PeopleController : ControllerBase
     {
-        private ITechService _techService;
-        public TechController(ITechService techService)
+        private IPeopleService _peopleService;
+        public PeopleController(IPeopleService peopleService)
         {
-            _techService = techService;
+            _peopleService = peopleService;
         }
 
         [HttpGet]
         public IActionResult GetAll()
         {
-            return Ok(_techService.GetAll());
+            return Ok(_peopleService.GetAll());
         }
     }
 }

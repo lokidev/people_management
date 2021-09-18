@@ -5,22 +5,22 @@ using System.Linq;
 
 namespace PeopleManagement.Repos
 {
-    public class TechRepo
+    public class PeopleRepo
     {
         private PeopleManagementContext db;
 
-        public TechRepo(PeopleManagementContext db)
+        public PeopleRepo(PeopleManagementContext db)
         {
             this.db = db;
         }
 
-        public List<Tech> GetProduts()
+        public List<Person> GetPeople()
         {
             if (db != null)
             {
-                List<Tech> employees = new List<Tech>();
+                List<Person> employees = new List<Person>();
 
-                var result = db.Teches.OrderByDescending(x => x.TechName).ToList();
+                var result = db.People.OrderByDescending(x => x.Id).ToList();
 
                 return result;
             }
