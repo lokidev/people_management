@@ -12,7 +12,7 @@ app.get('/', function (req, res) {
             options: {
                 userName: 'sa',
                 password: 'Yukon900', // update me
-                database: 'Resume' // doesn't seem to work?
+                database: 'PeopleManagement' // doesn't seem to work?
             },
         }
     };
@@ -23,7 +23,7 @@ app.get('/', function (req, res) {
         if (err) {
             console.log(err);
         } else {
-            sqlreq = new request("SELECT * FROM Resume.dbo.Tech FOR JSON AUTO", function (err, rowCount) {
+            sqlreq = new request("SELECT * FROM PeopleManagement.dbo.Tech FOR JSON AUTO", function (err, rowCount) {
                 if (err) {
                     console.log(err);
                 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace QuickTechApi.Models
+namespace PeopleManagement.Models
 {
     public partial class Tech
     {

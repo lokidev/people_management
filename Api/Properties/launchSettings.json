@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "QuickTechApi": {
+    "PeopleManagement": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "api/tech",

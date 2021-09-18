@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using QuickTechApi.Services;
+using PeopleManagement.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace QuickTechApi.Controllers
+namespace PeopleManagement.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

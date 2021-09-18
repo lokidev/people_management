@@ -1,15 +1,15 @@
-using QuickTechApi.Models;
+using PeopleManagement.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace QuickTechApi.Repos
+namespace PeopleManagement.Repos
 {
     public class TechRepo
     {
-        private ResumeContext db;
+        private PeopleManagementContext db;
 
-        public TechRepo(ResumeContext db)
+        public TechRepo(PeopleManagementContext db)
         {
             this.db = db;
         }

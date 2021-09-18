@@ -1,12 +1,12 @@
-﻿using QuickTechApi.Models;
+﻿using PeopleManagement.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using QuickTechApi.Repos;
+using PeopleManagement.Repos;
 using Microsoft.Extensions.Configuration;
 
-namespace QuickTechApi.Services
+namespace PeopleManagement.Services
 {
     public class TechService : ITechService
     {
@@ -19,7 +19,7 @@ namespace QuickTechApi.Services
 
         public ICollection<Tech> GetAll()
         {
-            using (var db = new ResumeContext(_configuration))
+            using (var db = new PeopleManagementContext(_configuration))
             {
                 var t = new TechRepo(db);
                 return t.GetProduts();

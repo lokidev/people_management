@@ -5,23 +5,24 @@ using Microsoft.Extensions.Configuration;
 
 #nullable disable
 
-namespace QuickTechApi.Models
+namespace PeopleManagement.Models
 {
-    public partial class ResumeContext : DbContext
+    public partial class PeopleManagementContext : DbContext
     {
         private readonly IConfiguration _configuration;
 
-        public ResumeContext(IConfiguration configuration)
+        public PeopleManagementContext(IConfiguration configuration)
         {
             _configuration = configuration;
         }
 
-        public ResumeContext(DbContextOptions<ResumeContext> options, IConfiguration configuration)
+        public PeopleManagementContext(DbContextOptions<PeopleManagementContext> options, IConfiguration configuration)
             : base(options)
         {
             _configuration = configuration;
         }
 
+        public virtual DbSet<Person> People { get; set; }
         public virtual DbSet<Tech> Teches { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -29,14 +30,32 @@ namespace QuickTechApi.Models
             if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder.UseSqlServer(_configuration.GetSection("SqlConnection").Get<string>());
-                // Use when running outside of docker
-                // optionsBuilder.UseSqlServer("Server=localhost,5434;Database=Resume;User ID=sa;Password=Yukon900;");
+                //optionsBuilder.UseSqlServer("Server=localhost,5434;Database=PeopleManagement;User ID=sa;Password=Yukon900;");
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
+
+            modelBuilder.Entity<Person>(entity =>
+            {
+                entity.Property(e => e.CreationDate).HasColumnType("datetime");
+
+                entity.Property(e => e.DestructionDate).HasColumnType("datetime");
+
+                entity.Property(e => e.FirstName)
+                    .IsRequired()
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.IdentificationTags).IsUnicode(false);
+
+                entity.Property(e => e.LastName)
+                    .IsRequired()
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+            });
 
             modelBuilder.Entity<Tech>(entity =>
             {
