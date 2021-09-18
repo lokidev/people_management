@@ -12,4 +12,4 @@ for i in {1..50}; do
 done
 
 #import the data from the csv file
-/opt/mssql-tools/bin/bcp PeopleManagement.dbo.Tech in "/usr/src/app/Tech.csv" -c -t',' -S localhost -U sa -P Yukon900
+#/opt/mssql-tools/bin/bcp PeopleManagement.dbo.Tech in "/usr/src/app/Tech.csv" -c -t',' -S localhost -U sa -P Yukon900
