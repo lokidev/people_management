@@ -25,5 +25,14 @@ namespace PeopleManagement.Services
                 return p.GetPeople();
             }
         }
+
+        public int Seed(int amount)
+        {
+            using (var db = new PeopleManagementContext(_configuration))
+            {
+                var p = new PeopleRepo(db);
+                return p.SeedPeople(amount);
+            }
+        }
     }
 }

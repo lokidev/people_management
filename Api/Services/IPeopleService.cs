@@ -9,5 +9,6 @@ namespace PeopleManagement.Services
     public interface IPeopleService
     {
         public ICollection<Person> GetAll();
+        public int Seed(int amount);
     }
 }

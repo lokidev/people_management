@@ -22,5 +22,12 @@ namespace PeopleManagement.Controllers
         {
             return Ok(_peopleService.GetAll());
         }
+
+        [HttpGet]
+        [Route("Seed")]
+        public IActionResult Seed(int amount)
+        {
+            return Ok(_peopleService.Seed(amount));
+        }
     }
 }

@@ -23,7 +23,6 @@ namespace PeopleManagement.Models
         }
 
         public virtual DbSet<Person> People { get; set; }
-        public virtual DbSet<Tech> Teches { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -55,17 +54,6 @@ namespace PeopleManagement.Models
                     .IsRequired()
                     .HasMaxLength(255)
                     .IsUnicode(false);
-            });
-
-            modelBuilder.Entity<Tech>(entity =>
-            {
-                entity.HasNoKey();
-
-                entity.ToTable("Tech");
-
-                entity.Property(e => e.Id).HasColumnName("ID");
-
-                entity.Property(e => e.IsCurrent).HasColumnName("isCurrent");
             });
 
             OnModelCreatingPartial(modelBuilder);

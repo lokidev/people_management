@@ -2,8 +2,6 @@ CREATE DATABASE PeopleManagement;
 GO
 USE PeopleManagement;
 GO
-CREATE TABLE Tech (ID int, TechName nvarchar(max), Years int, isCurrent bit);
-GO
 
 USE [PeopleManagement]
 GO

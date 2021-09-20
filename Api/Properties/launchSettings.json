@@ -20,7 +20,6 @@
     "PeopleManagement": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/tech",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
