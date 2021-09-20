@@ -201,7 +201,7 @@ GO
 
 ### Tech.csv
 
-This CSV data file contains some sample data to populate the Tech table.  It has two columns - ID and TechName separated by a comma.  The bcp command in the import-data.sh script uses this file to import the data into the Tech table created by the setup.sql script file.
+This CSV data file contains some PeopleManagement data to populate the Tech table.  It has two columns - ID and TechName separated by a comma.  The bcp command in the import-data.sh script uses this file to import the data into the Tech table created by the setup.sql script file.
 
 ```terminal
 1,Car
