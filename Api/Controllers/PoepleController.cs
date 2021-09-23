@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using PeopleManagement.Services;
+using PeopleManagement.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace PeopleManagement.Controllers

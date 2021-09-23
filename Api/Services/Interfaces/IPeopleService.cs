@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PeopleManagement.Services
+namespace PeopleManagement.Services.Interfaces
 {
     public interface IPeopleService
     {
         public ICollection<Person> GetAll();
-        public int Seed(int amount);
+        public List<Person> Seed(int amount);
     }
 }

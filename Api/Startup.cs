@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using PeopleManagement.Services;
+using PeopleManagement.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -14,6 +15,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using PeopleManagement.Messaging.Configurations;
+using PeopleManagement.Messaging.Services;
+using PeopleManagement.Messaging.Interfaces;
 
 namespace PeopleManagement
 {
@@ -42,6 +46,12 @@ namespace PeopleManagement
                                     });
             });
             services.AddControllers();
+
+            // Add consumer service to run in the background
+            services.Configure<RabbitMQSettings>(Configuration.GetSection("RabbitMQSettings"));
+            services.AddSingleton<IRabbitMqService, RabbitMqService>();
+            services.AddSingleton<IPeopleListenerService, PeopleListenerService>();
+
             services.AddScoped<IPeopleService, PeopleService>();
 
             // Register the Swagger generator, defining 1 or more Swagger documents
@@ -68,6 +78,8 @@ namespace PeopleManagement
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            InstantiateRmqServices(app);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -101,6 +113,17 @@ namespace PeopleManagement
             {
                 endpoints.MapControllers();
             });
+        }
+
+        /// <summary>
+        /// This forces any RabbitMQ services to instantiate and begin 
+        /// their services immediately
+        /// </summary>
+        /// <param name="app"></param>
+        private void InstantiateRmqServices(IApplicationBuilder app)
+        {
+            app.ApplicationServices.GetService(typeof(IRabbitMqService));
+            app.ApplicationServices.GetService(typeof(IPeopleListenerService));
         }
     }
 }
