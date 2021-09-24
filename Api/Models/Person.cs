@@ -10,12 +10,14 @@ namespace PeopleManagement.Models
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public bool Gender { get; set; }
-        public double Luck { get; set; }
-        public double Health { get; set; }
-        public double Hunger { get; set; }
-        public double Security { get; set; }
+        public bool? Gender { get; set; }
+        public float? Luck { get; set; }
+        public float? Health { get; set; }
+        public float? Hunger { get; set; }
+        public float? Security { get; set; }
         public DateTime CreationDate { get; set; }
+        public DateTime? BirthDate { get; set; }
+        public DateTime? DeathDate { get; set; }
         public DateTime? DestructionDate { get; set; }
         public string IdentificationTags { get; set; }
     }

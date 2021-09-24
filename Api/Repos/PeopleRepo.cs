@@ -37,7 +37,7 @@ namespace PeopleManagement.Repos
                 var createdPeople = new List<Person>();
                 for (int i = existing + 1; i < existing + 1 + amount; i++)
                 {
-                    var person = db.People.Add(new Person() { FirstName = "Josh-" + i, LastName = "French-" + i, Gender = true, Health = 100.00, Hunger = 100.00, Security = 100.00, Luck = 100.00, CreationDate = DateTime.Now, IdentificationTags = "{}", DestructionDate = null });
+                    var person = db.People.Add(new Person() { CreationDate = DateTime.Now, IdentificationTags = "{}", DestructionDate = null });
                     db.SaveChanges();
                     createdPeople.Add(person.Entity);
                 }

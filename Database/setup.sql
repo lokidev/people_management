@@ -17,14 +17,16 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Pe
 BEGIN
 CREATE TABLE [dbo].[People](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[FirstName] [varchar](255) NOT NULL,
-	[LastName] [varchar](255) NOT NULL,
-	[Gender] [bit] NOT NULL,
-	[Luck] [float] NOT NULL,
-	[Health] [float] NOT NULL,
-	[Hunger] [float] NOT NULL,
-	[Security] [float] NOT NULL,
+	[FirstName] [varchar](255) NULL,
+	[LastName] [varchar](255) NULL,
+	[Gender] [bit] NULL,
+	[Luck] [float] NULL,
+	[Health] [float] NULL,
+	[Hunger] [float] NULL,
+	[Security] [float] NULL,
 	[CreationDate] [datetime] NOT NULL,
+	[BirthDate] [datetime] NULL,
+	[DeathDate] [datetime] NULL,
 	[DestructionDate] [datetime] NULL,
 	[IdentificationTags] [varchar](max) NULL,
  CONSTRAINT [PK_People] PRIMARY KEY CLUSTERED 
