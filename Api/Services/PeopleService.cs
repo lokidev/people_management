@@ -44,5 +44,16 @@ namespace PeopleManagement.Services
                 return seededPeople;
             }
         }
+
+        public Person Update(Person person)
+        {
+            using (var db = new PeopleManagementContext(_configuration))
+            {
+                var p = new PeopleRepo(db);
+                var updatedPerson = p.UpdatePerson(person);
+                mRabbitMqService.sendMessage(person, "people_exchange_main.person.updated", true);
+                return updatedPerson;
+            }
+        }
     }
 }
