@@ -46,6 +46,18 @@ namespace PeopleManagement.Repos
             return new List<Person>();
         }
 
+        public Person AddPerson(Person person)
+        {
+            if (db != null)
+            {
+                var addedPerson = db.People.Add(person);
+                db.SaveChanges();
+
+                return addedPerson.Entity;
+            }
+            return null;
+        }
+
         public Person UpdatePerson(Person person)
         {
             if (db != null)

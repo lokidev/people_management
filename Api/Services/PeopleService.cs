@@ -39,9 +39,20 @@ namespace PeopleManagement.Services
                 var seededPeople = p.SeedPeople(amount);
                 foreach (var person in seededPeople)
                 {
-                    mRabbitMqService.sendMessage(person, "people_exchange_main.person.created", true);
+                    mRabbitMqService.sendMessage(person, "people_exchange_main.person.seeded", true);
                 }
                 return seededPeople;
+            }
+        }
+
+        public Person Add(Person person)
+        {
+            using (var db = new PeopleManagementContext(_configuration))
+            {
+                var p = new PeopleRepo(db);
+                var addedPerson = p.AddPerson(person);
+                mRabbitMqService.sendMessage(person, "people_exchange_main.person.created", true);
+                return addedPerson;
             }
         }
 

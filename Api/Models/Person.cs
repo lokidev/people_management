@@ -15,6 +15,9 @@ namespace PeopleManagement.Models
         public double? Health { get; set; }
         public double? Hunger { get; set; }
         public double? Security { get; set; }
+        public double? AvailableFood { get; set; }
+        public double? AvailableResources { get; set; }
+        public int? Mate { get; set; }
         public DateTime CreationDate { get; set; }
         public DateTime? BirthDate { get; set; }
         public DateTime? DeathDate { get; set; }
