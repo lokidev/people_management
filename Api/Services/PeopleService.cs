@@ -22,16 +22,25 @@ namespace PeopleManagement.Services
             mRabbitMqService = rabbitMqService;
         }
 
-        public ICollection<Person> GetAll()
+        public IEnumerable<Person> GetAll(int amount, int skip)
         {
             using (var db = new PeopleManagementContext(_configuration))
             {
                 var p = new PeopleRepo(db);
-                return p.GetPeople();
+                return p.GetPeople(amount, skip);
             }
         }
 
-        public List<Person> Seed(int amount)
+        public IEnumerable<Person> GetSingles(int amount, int skip)
+        {
+            using (var db = new PeopleManagementContext(_configuration))
+            {
+                var p = new PeopleRepo(db);
+                return p.GetSinglePeople(amount, skip);
+            }
+        }
+
+        public IEnumerable<Person> Seed(int amount)
         {
             using (var db = new PeopleManagementContext(_configuration))
             {

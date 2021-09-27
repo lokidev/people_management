@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace PeopleManagement.Repos
 {
-    public class PeopleRepo
+    public class PeopleRepo: IPeopleRepo
     {
         private PeopleManagementContext db;
 
@@ -16,13 +16,17 @@ namespace PeopleManagement.Repos
             this.db = db;
         }
 
-        public List<Person> GetPeople()
+        public IEnumerable<Person> GetPeople(int amount, int skip)
         {
             if (db != null)
             {
                 List<Person> employees = new List<Person>();
 
-                var result = db.People.OrderByDescending(x => x.Id).ToList();
+                var result = db.People
+                    .OrderByDescending(x => x.Id)
+                    .Take(amount)
+                    .Skip(skip)
+                    .ToList();
 
                 return result;
             }
@@ -30,7 +34,26 @@ namespace PeopleManagement.Repos
             return null;
         }
 
-        public List<Person> SeedPeople(int amount){
+        public IEnumerable<Person> GetSinglePeople(int amount, int skip)
+        {
+            if (db != null)
+            {
+                List<Person> employees = new List<Person>();
+
+                var result = db.People
+                    .Where(x => !x.Mate.HasValue)
+                    .OrderByDescending(x => x.Id)
+                    .Take(amount)
+                    .Skip(skip)
+                    .ToList();
+
+                return result;
+            }
+
+            return null;
+        }
+
+        public IEnumerable<Person> SeedPeople(int amount){
             if (db != null)
             {
                 var existing = db.People.Count();

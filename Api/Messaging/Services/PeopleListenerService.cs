@@ -18,6 +18,7 @@ using PeopleManagement.Repos;
 using PeopleManagement.Models;
 using PeopleManagement.Services;
 using Microsoft.Extensions.Configuration;
+using PeopleManagement.Services.Interfaces;
 
 namespace PeopleManagement.Messaging.Services
 {
@@ -30,9 +31,8 @@ namespace PeopleManagement.Messaging.Services
         private RabbitMQSettings settings;
         private ILogger<PeopleListenerService> logger;
         private IServiceScopeFactory serviceScopeFactory;
-        private IRabbitMqService mRabbitMqService;
-        private readonly IConfiguration _configuration;
-
+        private IPeopleService mPeopleService;
+        
         private RMQConnection rmqConnection;
         private RMQConsumerChannel consumerChannel;
         private Dictionary<string, CustomBasicConsumer> consumers;
@@ -51,17 +51,17 @@ namespace PeopleManagement.Messaging.Services
         /// <param name="serviceScopeFactory">
         /// Service Scope for DI
         /// </param>
+        /// <param name="rabbitMqService"></param>
+        /// <param name="configuration"></param>
         public PeopleListenerService(
           IOptions<RabbitMQSettings> config,
           ILogger<PeopleListenerService> logger,
           IServiceScopeFactory serviceScopeFactory,
-          IRabbitMqService rabbitMqService,
-          IConfiguration configuration)
+          IPeopleService peopleService)
         {
             this.logger = logger;
             this.serviceScopeFactory = serviceScopeFactory;
-            this.mRabbitMqService = rabbitMqService;
-            this._configuration = configuration;
+            this.mPeopleService = peopleService;
             settings = config.Value;
             consumers = new Dictionary<string, CustomBasicConsumer>();
 
@@ -187,14 +187,13 @@ namespace PeopleManagement.Messaging.Services
             }
         }
 
-        private async void ProcessInboundMessage(string topic, string payload)
+        private void ProcessInboundMessage(string topic, string payload)
         {
             if (topic == "karma_exchange_main.person.decorated")
             {
                 Console.WriteLine("Message Recieved " + topic);
                 var person = JsonConvert.DeserializeObject<Person>(payload);
-                var peopleService = new PeopleService(_configuration, mRabbitMqService);
-                var updatedPerson = peopleService.Update(person);
+                var updatedPerson = mPeopleService.Update(person);
             }
         }
 

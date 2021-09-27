@@ -18,6 +18,7 @@ using Microsoft.OpenApi.Models;
 using PeopleManagement.Messaging.Configurations;
 using PeopleManagement.Messaging.Services;
 using PeopleManagement.Messaging.Interfaces;
+using PeopleManagement.Repos;
 
 namespace PeopleManagement
 {
@@ -49,10 +50,9 @@ namespace PeopleManagement
 
             // Add consumer service to run in the background
             services.Configure<RabbitMQSettings>(Configuration.GetSection("RabbitMQSettings"));
+            services.AddSingleton<IPeopleService, PeopleService>();
             services.AddSingleton<IRabbitMqService, RabbitMqService>();
             services.AddSingleton<IPeopleListenerService, PeopleListenerService>();
-
-            services.AddScoped<IPeopleService, PeopleService>();
 
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>

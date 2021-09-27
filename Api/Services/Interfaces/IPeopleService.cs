@@ -8,7 +8,10 @@ namespace PeopleManagement.Services.Interfaces
 {
     public interface IPeopleService
     {
-        public ICollection<Person> GetAll();
-        public List<Person> Seed(int amount);
+        IEnumerable<Person> GetAll(int amount, int skip);
+        IEnumerable<Person> GetSingles(int amount, int skip);
+        IEnumerable<Person> Seed(int amount);
+        Person Add(Person person);
+        Person Update(Person person);
     }
 }

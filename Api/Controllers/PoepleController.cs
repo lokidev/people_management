@@ -19,9 +19,16 @@ namespace PeopleManagement.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public IActionResult GetAll(int amount, int skip)
         {
-            return Ok(_peopleService.GetAll());
+            return Ok(_peopleService.GetAll(amount, skip));
+        }
+
+        [HttpGet]
+        [Route("singles")]
+        public IActionResult GetSingles(int amount, int skip)
+        {
+            return Ok(_peopleService.GetAll(amount, skip));
         }
 
         [HttpGet]
