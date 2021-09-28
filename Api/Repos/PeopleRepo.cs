@@ -9,20 +9,48 @@ namespace PeopleManagement.Repos
 {
     public class PeopleRepo: IPeopleRepo
     {
-        private PeopleManagementContext db;
+        protected readonly PeopleManagementContext db;
 
-        public PeopleRepo(PeopleManagementContext db)
+        public PeopleRepo(PeopleManagementContext dbContext)
         {
-            this.db = db;
+           this.db = dbContext;
+        }
+
+        public IEnumerable<Person> GetPeople()
+        {
+            if (db != null)
+            {
+                var result = db.People
+                    .OrderByDescending(x => x.Id)
+                    .ToList();
+
+                return result;
+            }
+
+            return null;
         }
 
         public IEnumerable<Person> GetPeople(int amount, int skip)
         {
             if (db != null)
             {
-                List<Person> employees = new List<Person>();
+                return db.People
+                    .OrderByDescending(x => x.Id)
+                    .Take(amount)
+                    .Skip(skip)
+                    .ToList();
+            }
 
+            return null;
+        }
+
+        public IEnumerable<Person> GetSinglePeople(int amount, int skip)
+        {
+            if (db != null)
+            {
                 var result = db.People
+                    .Where(x => !x.Mate.HasValue && x.BirthDate.HasValue)
+                    //.Where(x => x.BirthDate.Value < DateTime.Now.AddYears(-18))
                     .OrderByDescending(x => x.Id)
                     .Take(amount)
                     .Skip(skip)
@@ -34,14 +62,12 @@ namespace PeopleManagement.Repos
             return null;
         }
 
-        public IEnumerable<Person> GetSinglePeople(int amount, int skip)
+        public IEnumerable<Person> GetAdultPeople(int amount, int skip)
         {
             if (db != null)
             {
-                List<Person> employees = new List<Person>();
-
                 var result = db.People
-                    .Where(x => !x.Mate.HasValue)
+                    .Where(x => x.BirthDate.Value < DateTime.Now.AddYears(-18))
                     .OrderByDescending(x => x.Id)
                     .Take(amount)
                     .Skip(skip)
@@ -60,7 +86,7 @@ namespace PeopleManagement.Repos
                 var createdPeople = new List<Person>();
                 for (int i = existing + 1; i < existing + 1 + amount; i++)
                 {
-                    var person = db.People.Add(new Person() { CreationDate = DateTime.Now, IdentificationTags = "{}", DestructionDate = null });
+                    var person = db.People.Add(new Person() { CreationDate = DateTime.Now.AddYears(-18), IdentificationTags = "{}", DestructionDate = null });
                     db.SaveChanges();
                     createdPeople.Add(person.Entity);
                 }

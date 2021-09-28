@@ -31,7 +31,8 @@ namespace PeopleManagement.Messaging.Services
         private RabbitMQSettings settings;
         private ILogger<PeopleListenerService> logger;
         private IServiceScopeFactory serviceScopeFactory;
-        private IPeopleService mPeopleService;
+        private IRabbitMqService mRabbitMqService;
+        private IConfiguration mConfiguration;
         
         private RMQConnection rmqConnection;
         private RMQConsumerChannel consumerChannel;
@@ -51,17 +52,18 @@ namespace PeopleManagement.Messaging.Services
         /// <param name="serviceScopeFactory">
         /// Service Scope for DI
         /// </param>
-        /// <param name="rabbitMqService"></param>
-        /// <param name="configuration"></param>
+        /// <param name="peopleService"></param>
         public PeopleListenerService(
           IOptions<RabbitMQSettings> config,
           ILogger<PeopleListenerService> logger,
           IServiceScopeFactory serviceScopeFactory,
-          IPeopleService peopleService)
+          IConfiguration configuration,
+          IRabbitMqService rabbitMqService)
         {
             this.logger = logger;
             this.serviceScopeFactory = serviceScopeFactory;
-            this.mPeopleService = peopleService;
+            this.mConfiguration = configuration;
+            this.mRabbitMqService = rabbitMqService;
             settings = config.Value;
             consumers = new Dictionary<string, CustomBasicConsumer>();
 
@@ -189,11 +191,20 @@ namespace PeopleManagement.Messaging.Services
 
         private void ProcessInboundMessage(string topic, string payload)
         {
+            var peopleService = new PeopleService(mConfiguration,mRabbitMqService);
             if (topic == "karma_exchange_main.person.decorated")
             {
                 Console.WriteLine("Message Recieved " + topic);
                 var person = JsonConvert.DeserializeObject<Person>(payload);
-                var updatedPerson = mPeopleService.Update(person);
+                var updatedPerson = peopleService.Update(person);
+            }
+
+            if (topic == "world_exchange_main.time.newDay")
+            {
+                Console.WriteLine("Message Received " + topic);
+                var date = JsonConvert.DeserializeObject<DateTime>(payload);
+                peopleService.PerformDailyActivityOnAllPeople();
+                Console.WriteLine("Message Received " + topic + " " + date.ToString());
             }
         }
 

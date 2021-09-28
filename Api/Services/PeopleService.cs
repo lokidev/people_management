@@ -15,19 +15,28 @@ namespace PeopleManagement.Services
     {
         private IRabbitMqService mRabbitMqService;
         private readonly IConfiguration _configuration;
-
         public PeopleService(IConfiguration configuration, IRabbitMqService rabbitMqService)
         {
             _configuration = configuration;
             mRabbitMqService = rabbitMqService;
         }
 
+        public IEnumerable<Person> GetAll()
+        {
+            using (var db = new PeopleManagementContext(_configuration))
+            {
+                var repo = new PeopleRepo(db);
+                var result = repo.GetPeople();
+                return result;
+            }
+        }
+
         public IEnumerable<Person> GetAll(int amount, int skip)
         {
             using (var db = new PeopleManagementContext(_configuration))
             {
-                var p = new PeopleRepo(db);
-                return p.GetPeople(amount, skip);
+                var repo = new PeopleRepo(db);
+                return repo.GetPeople(amount, skip);
             }
         }
 
@@ -35,8 +44,8 @@ namespace PeopleManagement.Services
         {
             using (var db = new PeopleManagementContext(_configuration))
             {
-                var p = new PeopleRepo(db);
-                return p.GetSinglePeople(amount, skip);
+                var repo = new PeopleRepo(db);
+                return repo.GetSinglePeople(amount, skip);
             }
         }
 
@@ -44,8 +53,8 @@ namespace PeopleManagement.Services
         {
             using (var db = new PeopleManagementContext(_configuration))
             {
-                var p = new PeopleRepo(db);
-                var seededPeople = p.SeedPeople(amount);
+                var repo = new PeopleRepo(db);
+                var seededPeople = repo.SeedPeople(amount);
                 foreach (var person in seededPeople)
                 {
                     mRabbitMqService.sendMessage(person, "people_exchange_main.person.seeded", true);
@@ -54,12 +63,37 @@ namespace PeopleManagement.Services
             }
         }
 
+        public void PerformDailyActivityOnAllPeople()
+        {
+            using (var db = new PeopleManagementContext(_configuration))
+            {
+                var repo = new PeopleRepo(db);
+                var people = repo.GetPeople();
+                foreach (var person in people)
+                {
+                    this.PerformDailyActivity(person);
+                }
+            }
+        }
+
+        public void PerformDailyActivity(Person person)
+        {
+            using (var db = new PeopleManagementContext(_configuration))
+            {
+                var repo = new PeopleRepo(db);
+                var singles = GetSingles(20, 0)
+                .Where(p => p.Gender != person.Gender);
+                person.AttemptConection(singles);
+                repo.UpdatePerson(person);
+            }
+        }
+
         public Person Add(Person person)
         {
             using (var db = new PeopleManagementContext(_configuration))
             {
-                var p = new PeopleRepo(db);
-                var addedPerson = p.AddPerson(person);
+                var repo = new PeopleRepo(db);
+                var addedPerson = repo.AddPerson(person);
                 mRabbitMqService.sendMessage(person, "people_exchange_main.person.created", true);
                 return addedPerson;
             }
@@ -69,8 +103,8 @@ namespace PeopleManagement.Services
         {
             using (var db = new PeopleManagementContext(_configuration))
             {
-                var p = new PeopleRepo(db);
-                var updatedPerson = p.UpdatePerson(person);
+                var repo = new PeopleRepo(db);
+                var updatedPerson = repo.UpdatePerson(person);
                 mRabbitMqService.sendMessage(person, "people_exchange_main.person.updated", true);
                 return updatedPerson;
             }

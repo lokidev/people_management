@@ -19,6 +19,13 @@ namespace PeopleManagement.Controllers
         }
 
         [HttpGet]
+        public IActionResult GetAll()
+        {
+            return Ok(_peopleService.GetAll());
+        }
+
+        [HttpGet]
+        [Route("paged")]
         public IActionResult GetAll(int amount, int skip)
         {
             return Ok(_peopleService.GetAll(amount, skip));

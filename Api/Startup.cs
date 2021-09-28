@@ -19,6 +19,9 @@ using PeopleManagement.Messaging.Configurations;
 using PeopleManagement.Messaging.Services;
 using PeopleManagement.Messaging.Interfaces;
 using PeopleManagement.Repos;
+using Microsoft.EntityFrameworkCore;
+using PeopleManagement.Models;
+using PeopleManagement.Configurations;
 
 namespace PeopleManagement
 {
@@ -35,25 +38,33 @@ namespace PeopleManagement
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(options =>
+            var connectionString = GetDbConnectionString();
+
+            services.AddDbContext<PeopleManagementContext>(options =>
             {
-                options.AddPolicy(name: MyAllowSpecificOrigins,
-                                    builder =>
-                                    {
-                                        builder
-                                        .AllowAnyHeader()
-                                        .AllowAnyMethod()
-                                        .AllowAnyOrigin();
-                                    });
+                options.UseSqlServer(connectionString,
+                sqlServerOptionsAction: sqlOptions =>
+                {
+                    //Configuring Connection Resiliency:
+                    sqlOptions.
+                        EnableRetryOnFailure(maxRetryCount: 5,
+                        maxRetryDelay: TimeSpan.FromSeconds(30),
+                        errorNumbersToAdd: null);
+                });
             });
+
+            services.ConfigureRepositories()
+                    .ConfigureBusiness()
+                    .ConfigureServices()
+                    .ConfigureUtilities()
+                    .AddCorsConfiguration();
+
             services.AddControllers();
 
-            // Add consumer service to run in the background
-            services.Configure<RabbitMQSettings>(Configuration.GetSection("RabbitMQSettings"));
-            services.AddSingleton<IPeopleService, PeopleService>();
+            services.Configure<RabbitMQSettings>(Configuration.GetSection(nameof(RabbitMQSettings)));
             services.AddSingleton<IRabbitMqService, RabbitMqService>();
             services.AddSingleton<IPeopleListenerService, PeopleListenerService>();
-
+            
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
             {
@@ -113,6 +124,13 @@ namespace PeopleManagement
             {
                 endpoints.MapControllers();
             });
+        }
+
+        private string GetDbConnectionString()
+        {
+            string connectionString = Configuration.GetValue<string>("SqlConnection");
+
+            return connectionString;
         }
 
         /// <summary>

@@ -10,7 +10,6 @@ namespace PeopleManagement.Models
     public partial class PeopleManagementContext : DbContext
     {
         private readonly IConfiguration _configuration;
-
         public PeopleManagementContext(IConfiguration configuration)
         {
             _configuration = configuration;
@@ -29,7 +28,7 @@ namespace PeopleManagement.Models
             if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder.UseSqlServer(_configuration.GetSection("SqlConnection").Get<string>());
-                //optionsBuilder.UseSqlServer("Server=localhost,5434;Database=PeopleManagement;User ID=sa;Password=Yukon900;");
+                //optionsBuilder.UseSqlServer("Server=localhost,5432;Database=PeopleManagement;User ID=sa;Password=Yukon900;");
             }
         }
 
@@ -39,19 +38,21 @@ namespace PeopleManagement.Models
 
             modelBuilder.Entity<Person>(entity =>
             {
+                entity.Property(e => e.BirthDate).HasColumnType("datetime");
+
                 entity.Property(e => e.CreationDate).HasColumnType("datetime");
+
+                entity.Property(e => e.DeathDate).HasColumnType("datetime");
 
                 entity.Property(e => e.DestructionDate).HasColumnType("datetime");
 
                 entity.Property(e => e.FirstName)
-                    .IsRequired()
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.Property(e => e.IdentificationTags).IsUnicode(false);
 
                 entity.Property(e => e.LastName)
-                    .IsRequired()
                     .HasMaxLength(255)
                     .IsUnicode(false);
             });

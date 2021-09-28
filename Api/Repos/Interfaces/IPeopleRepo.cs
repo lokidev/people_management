@@ -9,6 +9,7 @@ namespace PeopleManagement.Repos
 {
     public interface IPeopleRepo
     {
+        IEnumerable<Person> GetPeople();
         IEnumerable<Person> GetPeople(int amount, int skip);
 
         IEnumerable<Person> GetSinglePeople(int amount, int skip);
