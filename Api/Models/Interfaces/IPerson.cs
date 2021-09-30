@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 
 #nullable disable
 
 namespace PeopleManagement.Models
 {
-    public interface IPerson: IConsume, IMate, IWork, ISocial, IShelter
+    public interface IPerson : IConsume, IMate, IWork, ISocial, IShelter
     {
         int Id { get; set; }
         string FirstName { get; set; }

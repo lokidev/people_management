@@ -1,7 +1,6 @@
 ﻿using PeopleManagement.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace PeopleManagement.Services.Interfaces
@@ -10,9 +9,9 @@ namespace PeopleManagement.Services.Interfaces
     {
         IEnumerable<Person> GetAll();
         IEnumerable<Person> GetAll(int amount, int skip);
-        IEnumerable<Person> GetSingles(int amount, int skip);
+        IEnumerable<Person> GetSingles(int amount, int skip, DateTime date, bool gender);
         IEnumerable<Person> Seed(int amount);
-        void PerformDailyActivityOnAllPeople();
+        Task PerformDailyActivityOnAllPeople(DateTime date);
         Person Add(Person person);
         Person Update(Person person);
     }

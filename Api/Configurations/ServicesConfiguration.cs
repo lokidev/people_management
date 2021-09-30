@@ -2,69 +2,68 @@ using Microsoft.Extensions.DependencyInjection;
 using PeopleManagement.Repos;
 using PeopleManagement.Services;
 using PeopleManagement.Services.Interfaces;
-using System.Collections.Generic;
 
 namespace PeopleManagement.Configurations
 {
-  /// <summary>
-  /// Services configuration for business and repository objects.
-  /// </summary>
-  public static class ServicesConfiguration
-  {
     /// <summary>
-    /// Extension method to include repositories for use in dependency injection.
+    /// Services configuration for business and repository objects.
     /// </summary>
-    /// <param name="services">[in] The extended services object.</param>
-    /// <returns>The static services object.</returns>
-    public static IServiceCollection ConfigureRepositories(this IServiceCollection services)
+    public static class ServicesConfiguration
     {
-      services.AddScoped<IPeopleRepo, PeopleRepo>();
+        /// <summary>
+        /// Extension method to include repositories for use in dependency injection.
+        /// </summary>
+        /// <param name="services">[in] The extended services object.</param>
+        /// <returns>The static services object.</returns>
+        public static IServiceCollection ConfigureRepositories(this IServiceCollection services)
+        {
+            services.AddScoped<IPeopleRepo, PeopleRepo>();
 
-      return services;
-    }
+            return services;
+        }
 
-    /// <summary>
-    /// Extension method to include business objects for use in dependency injection.
-    /// </summary>
-    /// <param name="services">[in] The extended services object.</param>
-    /// <returns>The static services object.</returns>
-    public static IServiceCollection ConfigureBusiness(this IServiceCollection services)
-    {
-      //services.AddScoped<IAssetsBusiness, AssetsBusiness>();
+        /// <summary>
+        /// Extension method to include business objects for use in dependency injection.
+        /// </summary>
+        /// <param name="services">[in] The extended services object.</param>
+        /// <returns>The static services object.</returns>
+        public static IServiceCollection ConfigureBusiness(this IServiceCollection services)
+        {
+            //services.AddScoped<IAssetsBusiness, AssetsBusiness>();
 
-      return services;
-    }
+            return services;
+        }
 
-    /// <summary>
-    /// Extension method to include service objects for use in dependency injection.
-    /// </summary>
-    /// <param name="services">[in] The extended services object.</param>
-    /// <returns>The static services object.</returns>
-    public static IServiceCollection ConfigureServices(this IServiceCollection services)
-    {
-      services.AddScoped<IPeopleService, PeopleService>();
+        /// <summary>
+        /// Extension method to include service objects for use in dependency injection.
+        /// </summary>
+        /// <param name="services">[in] The extended services object.</param>
+        /// <returns>The static services object.</returns>
+        public static IServiceCollection ConfigureServices(this IServiceCollection services)
+        {
+            services.AddScoped<IPeopleService, PeopleService>();
 
-      return services;
-    }
+            return services;
+        }
 
-    /// <summary>
-    /// Registers scoped utilitys and interfaces.
-    /// </summary>
-    ///
-    /// <param name="utilities">
-    /// The service collection for which the scoped utilities should be
-    /// registered. Must not be null.
-    /// </param>
-    ///
-    /// <returns>
-    /// The utilities collection.
-    /// </returns>
-    public static IServiceCollection ConfigureUtilities(this IServiceCollection utilities)
-    {
-      //utilities.AddScoped<IS3Client, S3Client>();
+        /// <summary>
+        /// Registers scoped utilitys and interfaces.
+        /// </summary>
+        ///
+        /// <param name="utilities">
+        /// The service collection for which the scoped utilities should be
+        /// registered. Must not be null.
+        /// </param>
+        ///
+        /// <returns>
+        /// The utilities collection.
+        /// </returns>
+        public static IServiceCollection ConfigureUtilities(this IServiceCollection utilities)
+        {
+            //utilities.AddScoped<IS3Client, S3Client>();
 
-      return utilities;
-    }
+            return utilities;
+        }
 
         /// <summary>
         /// Extention method to include Cors settings for web requests. This allows requests
@@ -72,7 +71,6 @@ namespace PeopleManagement.Configurations
         /// client(s) + MADEAs
         /// </summary>
         /// <param name="services">[in] The extended services object</param>
-        /// <param name="origins">List of origins</param>
         /// <returns>The static services object.</returns>
         public static IServiceCollection AddCorsConfiguration(this IServiceCollection services)
         {
@@ -80,16 +78,16 @@ namespace PeopleManagement.Configurations
             services.AddCors(options =>
             {
                 options.AddPolicy(name: MyAllowSpecificOrigins,
-                                    builder =>
-                                    {
-                                        builder
-                                        .AllowAnyHeader()
-                                        .AllowAnyMethod()
-                                        .AllowAnyOrigin();
-                                    });
+                    builder =>
+                    {
+                        builder
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowAnyOrigin();
+                    });
             });
 
             return services;
         }
-  }
+    }
 }

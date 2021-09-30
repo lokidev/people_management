@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using RMQConnection = RabbitMQ.Client.IConnection;
 using RMQConsumerChannel = RabbitMQ.Client.IModel;
 using RMQConnectionFactory = RabbitMQ.Client.ConnectionFactory;
@@ -14,11 +13,9 @@ using RabbitMQ.Client.Exceptions;
 using RabbitMQ.Client.Events;
 using PeopleManagement.Messaging.Configurations;
 using PeopleManagement.Messaging.Interfaces;
-using PeopleManagement.Repos;
 using PeopleManagement.Models;
 using PeopleManagement.Services;
 using Microsoft.Extensions.Configuration;
-using PeopleManagement.Services.Interfaces;
 
 namespace PeopleManagement.Messaging.Services
 {
@@ -33,7 +30,7 @@ namespace PeopleManagement.Messaging.Services
         private IServiceScopeFactory serviceScopeFactory;
         private IRabbitMqService mRabbitMqService;
         private IConfiguration mConfiguration;
-        
+
         private RMQConnection rmqConnection;
         private RMQConsumerChannel consumerChannel;
         private Dictionary<string, CustomBasicConsumer> consumers;
@@ -52,7 +49,8 @@ namespace PeopleManagement.Messaging.Services
         /// <param name="serviceScopeFactory">
         /// Service Scope for DI
         /// </param>
-        /// <param name="peopleService"></param>
+        /// <param name="configuration"></param>
+        /// <param name="rabbitMqService"></param>
         public PeopleListenerService(
           IOptions<RabbitMQSettings> config,
           ILogger<PeopleListenerService> logger,
@@ -189,9 +187,9 @@ namespace PeopleManagement.Messaging.Services
             }
         }
 
-        private void ProcessInboundMessage(string topic, string payload)
+        private async void ProcessInboundMessage(string topic, string payload)
         {
-            var peopleService = new PeopleService(mConfiguration,mRabbitMqService);
+            var peopleService = new PeopleService(mConfiguration, mRabbitMqService);
             if (topic == "karma_exchange_main.person.decorated")
             {
                 Console.WriteLine("Message Recieved " + topic);
@@ -201,10 +199,10 @@ namespace PeopleManagement.Messaging.Services
 
             if (topic == "world_exchange_main.time.newDay")
             {
-                Console.WriteLine("Message Received " + topic);
                 var date = JsonConvert.DeserializeObject<DateTime>(payload);
-                peopleService.PerformDailyActivityOnAllPeople();
-                Console.WriteLine("Message Received " + topic + " " + date.ToString());
+                Console.WriteLine("New month started " + date.ToString());
+                await peopleService.PerformDailyActivityOnAllPeople(date);
+                Console.WriteLine("New month ended " + date.ToString());
             }
         }
 

@@ -64,7 +64,7 @@ namespace PeopleManagement
             services.Configure<RabbitMQSettings>(Configuration.GetSection(nameof(RabbitMQSettings)));
             services.AddSingleton<IRabbitMqService, RabbitMqService>();
             services.AddSingleton<IPeopleListenerService, PeopleListenerService>();
-            
+
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
             {
