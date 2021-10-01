@@ -29,7 +29,7 @@ namespace PeopleManagement.Models
                     var loveChance = (personAttraction + mateAttraction + personLuck + mateLuck) / 4;
 
                     // If chance is 80 or better make connection
-                    if (loveChance >= 85)
+                    if (loveChance >= 90)
                     {
                         this.Mate = mate.Id;
                         break;
@@ -50,6 +50,21 @@ namespace PeopleManagement.Models
                 return false;
             }
         
+        }
+
+        public void CheckHealth(DateTime date)
+        {
+            if (BirthDate.Value.AddYears(85) < date)
+            {
+                DeathDate = date;
+            }
+            else
+            {
+                if ((Health.Value + Luck + RandomPercentCalculator()) / 3 < 50)
+                {
+                    DeathDate = date;
+                }
+            }
         }
 
         public void CollectCompensation()
@@ -105,7 +120,7 @@ namespace PeopleManagement.Models
         public static float RandomPercentCalculator()
         {
             Random r = new Random();
-            int rInt = r.Next(50, 100); //for ints
+            int rInt = r.Next(25, 100); //for ints
             return rInt;
         }
     }

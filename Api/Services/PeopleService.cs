@@ -61,7 +61,6 @@ namespace PeopleManagement.Services
                 var singles = GetSingles(2, 0, date, !person.Gender.Value);
                 await PerformDailyActivity(person, date, singles);
             }
-
         }
 
         public Task PerformDailyActivity(Person person, DateTime date, IEnumerable<Person> singles)
@@ -70,8 +69,18 @@ namespace PeopleManagement.Services
             // Only do this if person does not have a mate yet
             FindMate(person, singles, repo, date);
             HaveChild(person, date);
+            CheckHealth(person, date);
 
             return Task.CompletedTask;
+        }
+
+        private void CheckHealth(Person person, DateTime date)
+        {
+            person.CheckHealth(date);
+            if (person.DeathDate.HasValue)
+            {
+                mRabbitMqService.sendMessage(person, "people_exchange_main.person.updated", true);
+            }
         }
 
         private Person HaveChild(Person person, DateTime date)

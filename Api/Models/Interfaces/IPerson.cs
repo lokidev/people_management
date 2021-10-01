@@ -22,5 +22,7 @@ namespace PeopleManagement.Models
         DateTime? DeathDate { get; set; }
         DateTime? DestructionDate { get; set; }
         string IdentificationTags { get; set; }
+
+        void CheckHealth(DateTime date);
     }
 }
