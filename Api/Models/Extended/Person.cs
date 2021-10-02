@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using PeopleManagement.Calculations;
+using PeopleManagement.Calculations.Interfaces;
 
 #nullable disable
 
@@ -9,6 +11,12 @@ namespace PeopleManagement.Models
 {
     public partial class Person : IPerson
     {
+        private ICalculator mCalculator;
+        public Person()
+        {
+            mCalculator = new Calculator();
+        }
+
         public Person AttemptConection(IEnumerable<Person> pMates)
         {
             // Check if the person you are looking for already has a mate
@@ -19,17 +27,7 @@ namespace PeopleManagement.Models
 
                 foreach (var mate in pMates)
                 {
-                    // Variables for calculation
-                    var personAttraction = RandomPercentCalculator();
-                    var mateAttraction = RandomPercentCalculator();
-                    var personLuck = Luck;
-                    var mateLuck = mate.Luck;
-
-                    //Calculate chance of connection
-                    var loveChance = (personAttraction + mateAttraction + personLuck + mateLuck) / 4;
-
-                    // If chance is 80 or better make connection
-                    if (loveChance >= 90)
+                    if (mCalculator.MadeConnection(Luck.Value, mate.Luck.Value))
                     {
                         this.Mate = mate.Id;
                         break;
@@ -41,7 +39,7 @@ namespace PeopleManagement.Models
 
         public bool AttemptProcreation()
         {
-            if ((this.Luck.Value + RandomPercentCalculator())/2 >= 90)
+            if (mCalculator.ConcievedChild(Luck.Value))
             {
                 return true;
             }
@@ -60,7 +58,7 @@ namespace PeopleManagement.Models
             }
             else
             {
-                if ((Health.Value + Luck + RandomPercentCalculator()) / 3 < 50)
+                if (mCalculator.ShouldDie(Health.Value, Luck.Value))
                 {
                     DeathDate = date;
                 }

@@ -54,12 +54,41 @@ namespace PeopleManagement.Repos
             return null;
         }
 
+        public IEnumerable<Person> GetLivingPeople()
+        {
+            if (db != null)
+            {
+                return db.People.Where(x => !x.DeathDate.HasValue)
+                    .OrderBy(x => x.Id);
+            }
+
+            return null;
+        }
+
+        public IEnumerable<Person> GetLivingPeople(int amount, int skip)
+        {
+            if (db != null)
+            {
+                return db.People.Where(x => !x.DeathDate.HasValue)
+                    .OrderBy(x => x.Id)
+                    .Take(amount)
+                    .Skip(skip);
+            }
+
+            return null;
+        }
+
         public IEnumerable<Person> GetSinglePeople(int amount, int skip, DateTime date, bool gender)
         {
             if (db != null)
             {
                 var result = db.People
-                    .Where(x => !x.Mate.HasValue && x.BirthDate.HasValue && x.Gender.HasValue && x.BirthDate.Value < date.AddYears(-18) && x.Gender.Value == gender)
+                    .Where(x => !x.Mate.HasValue && 
+                        x.BirthDate.HasValue &&
+                        !x.DeathDate.HasValue &&
+                        x.Gender.HasValue && 
+                        x.BirthDate.Value < date.AddYears(-18) && 
+                        x.Gender.Value == gender)
                     //.Where(x => x.BirthDate.Value < date.AddYears(-18) && x.Gender.Value == gender)
                     .OrderBy(o => Guid.NewGuid())
                     .Take(amount)

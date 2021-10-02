@@ -55,7 +55,7 @@ namespace PeopleManagement.Services
         public async Task PerformDailyActivityOnAllPeople(DateTime date)
         {
             var repo = new PeopleRepo(mPeopleManagementContext);
-            var people = repo.GetPeople();
+            var people = repo.GetLivingPeople();
             foreach (var person in people)
             {
                 var singles = GetSingles(2, 0, date, !person.Gender.Value);
