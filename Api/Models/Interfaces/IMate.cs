@@ -4,7 +4,7 @@ namespace PeopleManagement.Models
 {
     public interface IMate
     {
-        Person AttemptConection(IEnumerable<Person> pMates);
+        Person AttemptConection(List<Person> pMates);
         bool AttemptProcreation();
     }
 }

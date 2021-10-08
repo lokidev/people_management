@@ -17,13 +17,13 @@ namespace PeopleManagement.Models
             mCalculator = new Calculator();
         }
 
-        public Person AttemptConection(IEnumerable<Person> pMates)
+        public Person AttemptConection(List<Person> pMates)
         {
             // Check if the person you are looking for already has a mate
             if (!Mate.HasValue)
             {
                 // Filter out people with mates already and current person
-                pMates = pMates.Where(p => p.Id != this.Id && !p.Mate.HasValue);
+                pMates = pMates.Where(p => p.Id != this.Id && !p.Mate.HasValue).ToList();
 
                 foreach (var mate in pMates)
                 {

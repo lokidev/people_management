@@ -15,7 +15,7 @@ namespace PeopleManagement.Repos
             this.db = dbContext;
         }
 
-        public IEnumerable<Person> GetPeople()
+        public List<Person> GetPeople()
         {
             if (db != null)
             {
@@ -41,44 +41,47 @@ namespace PeopleManagement.Repos
             return null;
         }
 
-        public IEnumerable<Person> GetPeople(int amount, int skip)
+        public List<Person> GetPeople(int amount, int skip)
         {
             if (db != null)
             {
                 return db.People
                     .OrderBy(x => x.Id)
                     .Take(amount)
-                    .Skip(skip);
+                    .Skip(skip)
+                    .ToList();
             }
 
             return null;
         }
 
-        public IEnumerable<Person> GetLivingPeople()
+        public List<Person> GetLivingPeople()
         {
             if (db != null)
             {
                 return db.People.Where(x => !x.DeathDate.HasValue)
-                    .OrderBy(x => x.Id);
+                    .OrderBy(x => x.Id)
+                    .ToList();
             }
 
             return null;
         }
 
-        public IEnumerable<Person> GetLivingPeople(int amount, int skip)
+        public List<Person> GetLivingPeople(int amount, int skip)
         {
             if (db != null)
             {
                 return db.People.Where(x => !x.DeathDate.HasValue)
                     .OrderBy(x => x.Id)
                     .Take(amount)
-                    .Skip(skip);
+                    .Skip(skip)
+                    .ToList();
             }
 
             return null;
         }
 
-        public IEnumerable<Person> GetSinglePeople(int amount, int skip, DateTime date, bool gender)
+        public List<Person> GetSinglePeople(int amount, int skip, DateTime date, bool gender)
         {
             if (db != null)
             {
@@ -92,7 +95,8 @@ namespace PeopleManagement.Repos
                     //.Where(x => x.BirthDate.Value < date.AddYears(-18) && x.Gender.Value == gender)
                     .OrderBy(o => Guid.NewGuid())
                     .Take(amount)
-                    .Skip(skip);
+                    .Skip(skip)
+                    .ToList();
 
                 return result;
             }
@@ -100,7 +104,7 @@ namespace PeopleManagement.Repos
             return null;
         }
 
-        public IEnumerable<Person> GetAdultPeople(int amount, int skip, DateTime date)
+        public List<Person> GetAdultPeople(int amount, int skip, DateTime date)
         {
             if (db != null)
             {
@@ -108,7 +112,8 @@ namespace PeopleManagement.Repos
                     .Where(x => x.BirthDate.Value < date.AddYears(-18))
                     .OrderBy(x => x.Id)
                     .Take(amount)
-                    .Skip(skip);
+                    .Skip(skip)
+                    .ToList();
 
                 return result;
             }
@@ -116,7 +121,7 @@ namespace PeopleManagement.Repos
             return null;
         }
 
-        public IEnumerable<Person> SeedPeople(int amount)
+        public List<Person> SeedPeople(int amount)
         {
             if (db != null)
             {

@@ -22,26 +22,26 @@ namespace PeopleManagement.Services
             mPeopleManagementContext = new PeopleManagementContext(configuration);
         }
 
-        public IEnumerable<Person> GetAll()
+        public List<Person> GetAll()
         {
             var repo = new PeopleRepo(mPeopleManagementContext);
             var result = repo.GetPeople();
             return result;
         }
 
-        public IEnumerable<Person> GetAll(int amount, int skip)
+        public List<Person> GetAll(int amount, int skip)
         {
             var repo = new PeopleRepo(mPeopleManagementContext);
             return repo.GetPeople(amount, skip);
         }
 
-        public IEnumerable<Person> GetSingles(int amount, int skip, DateTime date, bool gender)
+        public List<Person> GetSingles(int amount, int skip, DateTime date, bool gender)
         {
             var repo = new PeopleRepo(mPeopleManagementContext);
             return repo.GetSinglePeople(amount, skip, date, gender);
         }
 
-        public IEnumerable<Person> Seed(int amount)
+        public List<Person> Seed(int amount)
         {
             var repo = new PeopleRepo(mPeopleManagementContext);
             var seededPeople = repo.SeedPeople(amount);
@@ -52,26 +52,24 @@ namespace PeopleManagement.Services
             return seededPeople;
         }
 
-        public async Task PerformDailyActivityOnAllPeople(DateTime date)
+        public void PerformDailyActivityOnAllPeople(DateTime date)
         {
             var repo = new PeopleRepo(mPeopleManagementContext);
             var people = repo.GetLivingPeople();
             foreach (var person in people)
             {
                 var singles = GetSingles(2, 0, date, !person.Gender.Value);
-                await PerformDailyActivity(person, date, singles);
+                PerformDailyActivity(person, date, singles);
             }
         }
 
-        public Task PerformDailyActivity(Person person, DateTime date, IEnumerable<Person> singles)
+        public void PerformDailyActivity(Person person, DateTime date, List<Person> singles)
         {
             var repo = new PeopleRepo(mPeopleManagementContext);
             // Only do this if person does not have a mate yet
             FindMate(person, singles, repo, date);
             HaveChild(person, date);
             CheckHealth(person, date);
-
-            return Task.CompletedTask;
         }
 
         private void CheckHealth(Person person, DateTime date)
@@ -105,7 +103,7 @@ namespace PeopleManagement.Services
             return null;
         }
 
-        private static void FindMate(Person person, IEnumerable<Person> singles, PeopleRepo repo, DateTime date)
+        private static void FindMate(Person person, List<Person> singles, PeopleRepo repo, DateTime date)
         {
             if (!person.Mate.HasValue && person.BirthDate < date.AddYears(-18) && person.BirthDate > date.AddYears(-38))
             {

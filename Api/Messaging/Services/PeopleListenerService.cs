@@ -187,11 +187,12 @@ namespace PeopleManagement.Messaging.Services
             }
         }
 
-        private async void ProcessInboundMessage(string topic, string payload)
+        private void ProcessInboundMessage(string topic, string payload)
         {
             var peopleService = new PeopleService(mConfiguration, mRabbitMqService);
             if (topic == "karma_exchange_main.person.decorated")
             {
+                peopleService = new PeopleService(mConfiguration, mRabbitMqService);
                 Console.WriteLine("Message Recieved " + topic);
                 var person = JsonConvert.DeserializeObject<Person>(payload);
                 var updatedPerson = peopleService.Update(person);
@@ -199,9 +200,10 @@ namespace PeopleManagement.Messaging.Services
 
             if (topic == "world_exchange_main.time.newDay")
             {
+                peopleService = new PeopleService(mConfiguration, mRabbitMqService);
                 var date = JsonConvert.DeserializeObject<DateTime>(payload);
                 Console.WriteLine("New month started " + date.ToString());
-                await peopleService.PerformDailyActivityOnAllPeople(date);
+                peopleService.PerformDailyActivityOnAllPeople(date);
                 Console.WriteLine("New month ended " + date.ToString());
             }
         }
