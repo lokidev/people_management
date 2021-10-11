@@ -8,6 +8,10 @@ namespace PeopleManagement.Services.Interfaces
     public interface IPeopleService
     {
         List<Person> GetAll();
+        int GetAllEverCount();
+        int GetAliveCount();
+        int GetDeathCount();
+        int GetMateCount();
         List<Person> GetAll(int amount, int skip);
         List<Person> GetSingles(int amount, int skip, DateTime date, bool gender);
         List<Person> Seed(int amount);

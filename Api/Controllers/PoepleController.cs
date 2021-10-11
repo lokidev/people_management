@@ -32,10 +32,31 @@ namespace PeopleManagement.Controllers
         }
 
         [HttpGet]
-        [Route("singles")]
-        public IActionResult GetSingles(int amount, int skip)
+        [Route("allEverCount")]
+        public IActionResult GetAllEverCount()
         {
-            return Ok(_peopleService.GetAll(amount, skip));
+            return Ok(_peopleService.GetAllEverCount());
+        }
+
+        [HttpGet]
+        [Route("aliveCount")]
+        public IActionResult GetAliveCount()
+        {
+            return Ok(_peopleService.GetAliveCount());
+        }
+
+        [HttpGet]
+        [Route("deathCount")]
+        public IActionResult GetDeathCount()
+        {
+            return Ok(_peopleService.GetDeathCount());
+        }
+
+        [HttpGet]
+        [Route("mateCount")]
+        public IActionResult GetMateCount()
+        {
+            return Ok(_peopleService.GetMateCount());
         }
 
         [HttpGet]

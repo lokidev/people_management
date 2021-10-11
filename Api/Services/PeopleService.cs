@@ -29,6 +29,34 @@ namespace PeopleManagement.Services
             return result;
         }
 
+        public int GetAllEverCount()
+        {
+            var repo = new PeopleRepo(mPeopleManagementContext);
+            var result = repo.GetPeople().Count();
+            return result;
+        }
+
+        public int GetAliveCount()
+        {
+            var repo = new PeopleRepo(mPeopleManagementContext);
+            var result = repo.GetPeople().Where(p => !p.DeathDate.HasValue).Count();
+            return result;
+        }
+
+        public int GetDeathCount()
+        {
+            var repo = new PeopleRepo(mPeopleManagementContext);
+            var result = repo.GetPeople().Where(p => p.DeathDate.HasValue).Count();
+            return result;
+        }
+
+        public int GetMateCount()
+        {
+            var repo = new PeopleRepo(mPeopleManagementContext);
+            var result = repo.GetPeople().Where(p => p.Mate.HasValue && !p.DeathDate.HasValue).Count();
+            return result;
+        }
+
         public List<Person> GetAll(int amount, int skip)
         {
             var repo = new PeopleRepo(mPeopleManagementContext);

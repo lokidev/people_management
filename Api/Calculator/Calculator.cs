@@ -39,7 +39,7 @@ namespace PeopleManagement.Calculations
 
         public bool MadeConnection(double personLuck, double potentialMateLuck)
         {
-            var divisableBy = 4;
+            var divisibleBy = 4;
             float successRate = 85;
 
             var personAttraction = RandomPercentCalculator();
@@ -49,7 +49,7 @@ namespace PeopleManagement.Calculations
             var totalAttraction = personAttraction + mateAttraction;
             var total = totalLuck + totalAttraction;
 
-            var dividedPersentage = total / divisableBy;
+            var dividedPersentage = total / divisibleBy;
 
             return dividedPersentage > successRate;
         }
