@@ -24,6 +24,6 @@ namespace PeopleManagement.Models
         public DateTime? BirthDate { get; set; }
         public DateTime? DeathDate { get; set; }
         public DateTime? DestructionDate { get; set; }
-        public string IdentificationTags { get; set; }
+        public string IdentificationTags { get; set; } 
     }
 }
