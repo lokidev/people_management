@@ -10,6 +10,7 @@ namespace PeopleManagement.Repos
         List<Person> GetPeople();
         List<Person> GetPeople(int amount, int skip);
         List<Person> GetLivingPeople();
+        List<Person> GetPeopleInAgeRange(DateTime currentDate, int minAge, int maxAge);
         List<Person> GetLivingPeople(int amount, int skip);
         List<Person> GetSinglePeople(int amount, int skip, DateTime date, bool gender);
         List<Person> SeedPeople(int amount);

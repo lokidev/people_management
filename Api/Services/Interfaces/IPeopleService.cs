@@ -12,6 +12,7 @@ namespace PeopleManagement.Services.Interfaces
         int GetAliveCount();
         int GetDeathCount();
         int GetMateCount();
+        int GetInAgeRangeCount(DateTime currentDate, int minAge, int maxAge);
         List<Person> GetAll(int amount, int skip);
         List<Person> GetSingles(int amount, int skip, DateTime date, bool gender);
         List<Person> Seed(int amount);

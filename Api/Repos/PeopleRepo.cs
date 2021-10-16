@@ -161,5 +161,17 @@ namespace PeopleManagement.Repos
             }
             return null;
         }
+
+        public List<Person> GetPeopleInAgeRange(DateTime currentDate, int minAge, int maxAge)
+        {
+            if (db != null)
+            {
+                return db.People.Where(x => !x.DeathDate.HasValue && x.BirthDate.HasValue).Where(x => x.BirthDate.Value <= currentDate.AddYears(-minAge) && x.BirthDate.Value >= currentDate.AddYears(-maxAge))
+                    .OrderBy(x => x.Id)
+                    .ToList();
+            }
+
+            return null;
+        }
     }
 }

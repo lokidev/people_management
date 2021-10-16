@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using PeopleManagement.Services;
 using PeopleManagement.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using PeopleManagement.Models.Requests;
 
 namespace PeopleManagement.Controllers
 {
@@ -57,6 +58,13 @@ namespace PeopleManagement.Controllers
         public IActionResult GetMateCount()
         {
             return Ok(_peopleService.GetMateCount());
+        }
+
+        [HttpPost]
+        [Route("ageRangeCount")]
+        public IActionResult GetAgeRangeCount(AgeRange ageRangeModel)
+        {
+            return Ok(_peopleService.GetInAgeRangeCount(ageRangeModel.currentDate, ageRangeModel.MinAge, ageRangeModel.MaxAge));
         }
 
         [HttpGet]

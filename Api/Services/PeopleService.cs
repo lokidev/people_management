@@ -50,6 +50,13 @@ namespace PeopleManagement.Services
             return result;
         }
 
+        public int GetInAgeRangeCount(DateTime currentDate, int minAge, int maxAge)
+        {
+            var repo = new PeopleRepo(mPeopleManagementContext);
+            var result = repo.GetPeopleInAgeRange(currentDate, minAge, maxAge).Count();
+            return result;
+        }
+
         public int GetMateCount()
         {
             var repo = new PeopleRepo(mPeopleManagementContext);
