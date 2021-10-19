@@ -11,7 +11,7 @@ namespace PeopleManagement.Calculations
         public bool ShouldDie(double health, double luck)
         {
             var divisableBy = 3;
-            float successRate = 45;
+            float successRate = 50;
 
             var healthAndLuck = health + luck;
             var chance = RandomPercentCalculator();
@@ -25,7 +25,7 @@ namespace PeopleManagement.Calculations
         public bool ConcievedChild(double luck)
         {
             var divisableBy = 2;
-            float successRate = 92;
+            float successRate = 90;
 
             var personLuck = luck;
             var chance = RandomPercentCalculator();
@@ -40,7 +40,7 @@ namespace PeopleManagement.Calculations
         public bool MadeConnection(double personLuck, double potentialMateLuck)
         {
             var divisibleBy = 4;
-            float successRate = 82;
+            float successRate = 80;
 
             var personAttraction = RandomPercentCalculator();
             var mateAttraction = RandomPercentCalculator();
