@@ -64,6 +64,13 @@ namespace PeopleManagement.Services
             return result;
         }
 
+        public int GetWithoutMateCount()
+        {
+            var repo = new PeopleRepo(mPeopleManagementContext);
+            var result = repo.GetPeople().Where(p => !p.Mate.HasValue && !p.DeathDate.HasValue).Count();
+            return result;
+        }
+
         public List<Person> GetAll(int amount, int skip)
         {
             var repo = new PeopleRepo(mPeopleManagementContext);

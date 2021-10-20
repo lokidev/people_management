@@ -60,6 +60,13 @@ namespace PeopleManagement.Controllers
             return Ok(_peopleService.GetMateCount());
         }
 
+        [HttpGet]
+        [Route("withoutMateCount")]
+        public IActionResult GetWithoutMateCount()
+        {
+            return Ok(_peopleService.GetWithoutMateCount());
+        }
+
         [HttpPost]
         [Route("ageRangeCount")]
         public IActionResult GetAgeRangeCount(AgeRange ageRangeModel)
