@@ -120,6 +120,7 @@ namespace PeopleManagement.Services
             if (person.DeathDate.HasValue)
             {
                 mRabbitMqService.sendMessage(person, "people_exchange_main.person.updated", true);
+                mRabbitMqService.sendMessage(person, "people_exchange_main.person.died", true);
             }
         }
 
@@ -145,7 +146,7 @@ namespace PeopleManagement.Services
             return null;
         }
 
-        private static void FindMate(Person person, List<Person> singles, PeopleRepo repo, DateTime date)
+        private void FindMate(Person person, List<Person> singles, PeopleRepo repo, DateTime date)
         {
             if (!person.Mate.HasValue && person.BirthDate < date.AddYears(-18) && person.BirthDate > date.AddYears(-38))
             {
@@ -165,6 +166,9 @@ namespace PeopleManagement.Services
                             repo.UpdatePerson(person);
                             mate.Mate = person.Id;
                             repo.UpdatePerson(mate);
+                            mRabbitMqService.sendMessage(person, "people_exchange_main.person.mated", true);
+                            mRabbitMqService.sendMessage(mate, "people_exchange_main.person.mated", true);
+
                         }
                     }
                 }
