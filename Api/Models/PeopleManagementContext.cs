@@ -10,6 +10,10 @@ namespace PeopleManagement.Models
     public partial class PeopleManagementContext : DbContext
     {
         private readonly IConfiguration _configuration;
+        public PeopleManagementContext()
+        {
+            //For Moq testing only
+        }
         public PeopleManagementContext(IConfiguration configuration)
         {
             _configuration = configuration;
