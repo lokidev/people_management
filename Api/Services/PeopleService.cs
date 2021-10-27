@@ -67,8 +67,13 @@ namespace PeopleManagement.Services
         public int GetWithoutMateCount(DateTime currentDate)
         {
             var repo = new PeopleRepo(mPeopleManagementContext);
-            var result = repo.GetPeople().Where(p => !p.Mate.HasValue && !p.DeathDate.HasValue && p.BirthDate <= currentDate.AddYears(-18)).Count();
+            int result = FilterMates(currentDate, repo.GetPeople()); ;
             return result;
+        }
+
+        public static int FilterMates(DateTime currentDate, List<Person> people)
+        {
+            return people.Where(p => !p.Mate.HasValue && !p.DeathDate.HasValue && p.BirthDate.Value.Date <= currentDate.AddYears(-18).Date).Count();
         }
 
         public List<Person> GetAll(int amount, int skip)

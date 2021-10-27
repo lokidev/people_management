@@ -90,7 +90,7 @@ namespace PeopleManagement.Repos
                         x.BirthDate.HasValue &&
                         !x.DeathDate.HasValue &&
                         x.Gender.HasValue && 
-                        x.BirthDate.Value < date.AddYears(-18) && 
+                        x.BirthDate.Value.Year < date.AddYears(-18).Year && 
                         x.Gender.Value == gender)
                     //.Where(x => x.BirthDate.Value < date.AddYears(-18) && x.Gender.Value == gender)
                     .OrderBy(o => Guid.NewGuid())
@@ -109,7 +109,7 @@ namespace PeopleManagement.Repos
             if (db != null)
             {
                 var result = db.People
-                    .Where(x => x.BirthDate.Value < date.AddYears(-18))
+                    .Where(x => x.BirthDate.Value.Year < date.AddYears(-18).Year)
                     .OrderBy(x => x.Id)
                     .Take(amount)
                     .Skip(skip)
@@ -168,7 +168,7 @@ namespace PeopleManagement.Repos
             var maxDate = currentDate.AddYears(-maxAge);
             if (db != null)
             {
-                return db.People.Where(x => !x.DeathDate.HasValue && x.BirthDate.HasValue).Where(x => x.BirthDate.Value <= minDate && x.BirthDate.Value >= maxDate)
+                return db.People.Where(x => !x.DeathDate.HasValue && x.BirthDate.HasValue).Where(x => x.BirthDate.Value.Year <= minDate.Year && x.BirthDate.Value.Year >= maxDate.Year)
                     .OrderBy(x => x.Id)
                     .ToList();
             }
