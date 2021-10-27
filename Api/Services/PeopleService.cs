@@ -64,10 +64,10 @@ namespace PeopleManagement.Services
             return result;
         }
 
-        public int GetWithoutMateCount()
+        public int GetWithoutMateCount(DateTime currentDate)
         {
             var repo = new PeopleRepo(mPeopleManagementContext);
-            var result = repo.GetPeople().Where(p => !p.Mate.HasValue && !p.DeathDate.HasValue).Count();
+            var result = repo.GetPeople().Where(p => !p.Mate.HasValue && !p.DeathDate.HasValue && p.BirthDate <= currentDate.AddYears(-18)).Count();
             return result;
         }
 
@@ -148,7 +148,12 @@ namespace PeopleManagement.Services
 
         private void FindMate(Person person, List<Person> singles, PeopleRepo repo, DateTime date)
         {
-            if (!person.Mate.HasValue && person.BirthDate < date.AddYears(-18) && person.BirthDate > date.AddYears(-38))
+            var dateMinus18 = date.AddYears(-18);
+            var dateMinus38 = date.AddYears(-38);
+            var pBDay = person.BirthDate;
+
+            var b = 0;
+            if (!person.Mate.HasValue && person.BirthDate <= date.AddYears(-18) && person.BirthDate >= date.AddYears(-38))
             {
                 //Try and find a mate
                 person.AttemptConection(singles);

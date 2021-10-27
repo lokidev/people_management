@@ -60,11 +60,11 @@ namespace PeopleManagement.Controllers
             return Ok(_peopleService.GetMateCount());
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("withoutMateCount")]
-        public IActionResult GetWithoutMateCount()
+        public IActionResult GetWithoutMateCount(WorldDate currentDate)
         {
-            return Ok(_peopleService.GetWithoutMateCount());
+            return Ok(_peopleService.GetWithoutMateCount(currentDate.currDate));
         }
 
         [HttpPost]

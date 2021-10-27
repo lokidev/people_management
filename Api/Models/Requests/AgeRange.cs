@@ -13,4 +13,9 @@ namespace PeopleManagement.Models.Requests
 
         public int MaxAge { get; set; }
     }
+
+    public class WorldDate
+    {
+        public DateTime currDate { get; set; }
+    }
 }
